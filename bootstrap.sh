@@ -2,32 +2,42 @@
 
 # Enter your email
 EMAIL=textxd@berkeley.edu
+DOMAIN=textxd.org
 
-# Enter a zone
-ZONE=us-central1-a
+# Enter a region & zone
+#
+# use the us-central1-a zone to take full advantage of all ML GPU types which
+# are not available in all regions:
+#   https://cloud.google.com/ml-engine/docs/tensorflow/regions#region_considerations
+REGION=us-central1
+ZONE=${REGION}-a
+TYPE=n1-standard-2
 
 gcloud config set compute/zone $ZONE
 # Enter a name for your cluster
 CLUSTERNAME=shared
 
+# install kubectl
+gcloud components install kubectl
+
+gcloud compute addresses create jupyter --region $REGION
+IPADDRESS=$(gcloud compute addresses describe jupyter --region us-central1 --format="get(address)")
+IPADDRESS=${IPADDRESS:-UNCONFIGURED}
+
+HUBTOKEN=$(openssl rand -hex 32)
+PROXYTOKEN=$(openssl rand -hex 32)
+
+# create cluster with 8 nodes for ~26 max simulatneous users
 eval "cat <<EOF
 $(<config.yaml.template)
 EOF
 " | tee config.yaml
 
-# install kubectl
-gcloud components install kubectl
-
-# create cluster with 8 nodes for ~26 max simulatneous users
-#
-# use the us-central1-a zone to take full advantage of all ML GPU types which
-# are not available in all regions:
-#   https://cloud.google.com/ml-engine/docs/tensorflow/regions#region_considerations
 gcloud beta container clusters create $CLUSTERNAME \
         --cluster-version latest
         --node-labels hub.jupyter.org/node-purpose=core
         --num-nodes=2 \
-        --machine-type=n1-standard-2 \
+        --machine-type=$TYPE \
         --zone=$ZONE \
         --enable-autorepair \
         --enable-autoupgrade \

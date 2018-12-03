@@ -1,16 +1,18 @@
 hub:
   # output of first execution of 'openssl rand -hex 32'
-  cookieSecret: "$(openssl rand -hex 32)"
+  cookieSecret: "$HUBTOKEN"
   extraConfig: |
-    c.Authenticator.admin_users = {"textxd@berkeley.edu"}
+    c.Authenticator.admin_users = {"$EMAIL"}
 proxy:
   # output of second execution of 'openssl rand -hex 32'
-  secretToken: "$(openssl rand -hex 32)"
+  secretToken: "$PROXYTOKEN"
+  service:
+    loadBalancerIP: $IPADDRESS
   https:
     hosts:
-      - jupyter.textxd.org
+      - jupyter.${DOMAIN}
     letsencrypt:
-      contactEmail: textxd@berkeley.edu
+      contactEmail: $EMAIL
 singleuser:
   memory:
       limit: 1G
