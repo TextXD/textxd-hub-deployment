@@ -1,0 +1,22 @@
+hub:
+  # output of first execution of 'openssl rand -hex 32'
+  cookieSecret: "$(openssl rand -hex 32)"
+  extraConfig: |
+    c.Authenticator.admin_users = {"textxd@berkeley.edu"}
+proxy:
+  # output of second execution of 'openssl rand -hex 32'
+  secretToken: "$(openssl rand -hex 32)"
+  https:
+    hosts:
+      - jupyter.textxd.org
+    letsencrypt:
+      contactEmail: textxd@berkeley.edu
+singleuser:
+  memory:
+      limit: 1G
+      guarantee: 1G
+  storage:
+    capacity: 2Gi
+    storageClass:
+      parameters:
+         type: pd-ssd
