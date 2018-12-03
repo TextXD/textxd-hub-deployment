@@ -44,8 +44,8 @@ EOF
 # NOTE: the eval cat pattern is a bash-ism and may not work in non-bash shells
 
 gcloud beta container clusters create $CLUSTERNAME \
-        --cluster-version latest
-        --node-labels hub.jupyter.org/node-purpose=core
+        --cluster-version latest \
+        --node-labels hub.jupyter.org/node-purpose=core \
         --num-nodes=2 \
         --machine-type=$TYPE \
         --zone=$ZONE \
