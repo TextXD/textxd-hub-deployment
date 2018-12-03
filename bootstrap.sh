@@ -15,6 +15,9 @@ TYPE=n1-standard-2
 
 gcloud config set compute/zone $ZONE
 
+# Enable Kubernetes Engine API
+gcloud services enable container.googleapis.com
+
 # install kubectl
 gcloud components install kubectl
 
