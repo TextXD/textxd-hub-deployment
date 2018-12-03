@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # delete namespace
-kubectl delete namespace shared
+kubectl delete namespace jhub
 
 # destroy cluster
 gcloud container clusters delete shared --zone=us-central1-a
