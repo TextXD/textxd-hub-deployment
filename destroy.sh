@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # delete namespace
 kubectl delete namespace shared
 

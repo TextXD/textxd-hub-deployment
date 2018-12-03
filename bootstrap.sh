@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/bash
 
 # Enter your email
 EMAIL=textxd@berkeley.edu
@@ -32,6 +32,7 @@ eval "cat <<EOF
 $(<config.yaml.template)
 EOF
 " | tee config.yaml
+# NOTE: the eval cat pattern is a bash-ism and may not work in non-bash shells
 
 gcloud beta container clusters create $CLUSTERNAME \
         --cluster-version latest
