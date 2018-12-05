@@ -14,6 +14,9 @@ proxy:
     letsencrypt:
       contactEmail: $EMAIL
 singleuser:
+  image:
+    name: aculich/textxd-2018-demos
+    tag: "latest"
   memory:
       limit: 1G
       guarantee: 1G
